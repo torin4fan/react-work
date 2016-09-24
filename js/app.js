@@ -17,16 +17,41 @@ var my_news = [
 ];
 
 var Add = React.createClass({
-    
+
+    getInitialState: function () {
+      return {
+          agreeNotChecked: true,
+          authorIsEmpty: true,
+          textIsEmpty: true
+      }
+    },
+
     onBtnClickHandler: function () {
       alert(ReactDOM.findDOMNode(this.refs.myTestInput).value);
     },
 
+    onCheckRuleClick: function (e) {
+        ReactDOM.findDOMNode(this.refs.alert_button).disabled = !e.target.checked
+    },
+
+
+    onFiledChange: function (filedName, e) {
+        if(e.target.value.trim().length > 0) {
+            this.setState({[''+filedName]:false})
+        }else {
+            this.setState({[''+filedName]:true})
+        }
+    },
+
+
     render: function () {
+
+        var authorIsEmpty = this.state.authorIsEmpty;
+        var textIsEmpty = this.state.textIsEmpty;
         return(
             <form className="add cf">
                 <input className="add__author"
-                       defaultValue=''
+                       onChange={this.onFiledChange.bind(this, 'authorIsEmpty')}
                        ref='author'
                        placeholder="введите имя"
                        type="text"/>
@@ -34,11 +59,13 @@ var Add = React.createClass({
                     className="add__text"
                     defaultValue=''
                     ref='text'
+                    onChange={this.onFiledChange.bind(this, 'textIsEmpty')}
                     placeholder="введите текст новости"
                     type="text"
                 ></textarea>
                 <label className="add__checkrule">
                     <input type="checkbox"
+                           onChange={this.onCheckRuleClick}
                     defaultChecked={false}
                     ref="checkrule"/>
                     я согласен с правилами
@@ -47,18 +74,10 @@ var Add = React.createClass({
                     onClick={this.onBtnClickHandler}
                     className="add__btn"
                     ref="alert_button"
+                    disabled={ authorIsEmpty || textIsEmpty}
                 >Добавить новость</button>
             </form>
 
-            /*<div>
-                <input className="test-input"
-                       defaultValue=''
-                       ref='myTestInput'
-                       placeholder="введите значение"
-                       type="text"/>
-
-                <button onClick={this.onBtnClickHandler}>Показать алерт</button>
-            </div>*/
 
         )
     }
