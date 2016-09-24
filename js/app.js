@@ -16,11 +16,34 @@ var my_news = [
     }
 ];
 
+var TestInput = React.createClass({
+
+    getInitialState: function () {
+      return {
+          myValue: ''
+      }
+    },
+    onChangeHandler: function (e) {
+      this.setState({myValue: e.target.value})
+    },
+
+    render: function () {
+        return(
+            <input className="test-input"
+                   value={this.state.myValue}
+                   onChange={this.onChangeHandler}
+                   placeholder="введите значение"
+                   type="text"/>
+        )
+    }
+});
+
 var App = React.createClass({
     render: function () {
         return (
             <div className="app">
-                Всем привет, да опять
+                <h3>Новости</h3>
+                <TestInput />
                 <News data={my_news}/>
             </div>
         );
@@ -58,9 +81,6 @@ var Article = React.createClass({
         var bigText = this.props.data.bigText;
         var visible = this.state.visible;
 
-        console.log('render', this);
-
-
         return(
             <div className="article">
                 <p className="news__author">{author}</p>
@@ -84,6 +104,16 @@ var News = React.createClass({
         data: React.PropTypes.array.isRequired
     },
 
+    getInitialState:function () {
+      return {
+          counter: 0
+      }
+    },
+
+    ontotalNewsClick: function () {
+        this.setState({counter: ++this.state.counter})
+    },
+
     render: function () {
         var data = this.props.data;
 
@@ -104,7 +134,7 @@ var News = React.createClass({
         return (
             <div className="news">
                 {newsTamplate}
-                <strong className={data.length > 0 ? "":"none"}>
+                <strong onClick={this.ontotalNewsClick} className={data.length > 0 ? "":"none"}>
                     Всего новостей: {data.length}
                 </strong>
             </div>
