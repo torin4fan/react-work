@@ -16,24 +16,50 @@ var my_news = [
     }
 ];
 
-var TestInput = React.createClass({
-
-    getInitialState: function () {
-      return {
-          myValue: ''
-      }
-    },
-    onChangeHandler: function (e) {
-      this.setState({myValue: e.target.value})
+var Add = React.createClass({
+    
+    onBtnClickHandler: function () {
+      alert(ReactDOM.findDOMNode(this.refs.myTestInput).value);
     },
 
     render: function () {
         return(
-            <input className="test-input"
-                   value={this.state.myValue}
-                   onChange={this.onChangeHandler}
-                   placeholder="введите значение"
-                   type="text"/>
+            <form className="add cf">
+                <input className="add__author"
+                       defaultValue=''
+                       ref='author'
+                       placeholder="введите имя"
+                       type="text"/>
+                <textarea
+                    className="add__text"
+                    defaultValue=''
+                    ref='text'
+                    placeholder="введите текст новости"
+                    type="text"
+                ></textarea>
+                <label className="add__checkrule">
+                    <input type="checkbox"
+                    defaultChecked={false}
+                    ref="checkrule"/>
+                    я согласен с правилами
+                </label>
+                <button
+                    onClick={this.onBtnClickHandler}
+                    className="add__btn"
+                    ref="alert_button"
+                >Добавить новость</button>
+            </form>
+
+            /*<div>
+                <input className="test-input"
+                       defaultValue=''
+                       ref='myTestInput'
+                       placeholder="введите значение"
+                       type="text"/>
+
+                <button onClick={this.onBtnClickHandler}>Показать алерт</button>
+            </div>*/
+
         )
     }
 });
@@ -43,7 +69,7 @@ var App = React.createClass({
         return (
             <div className="app">
                 <h3>Новости</h3>
-                <TestInput />
+                <Add />
                 <News data={my_news}/>
             </div>
         );
